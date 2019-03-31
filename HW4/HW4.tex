@@ -1,0 +1,158 @@
+\documentclass[a4paper]{article}
+\usepackage[pdftex]{hyperref}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{ifthen}
+\usepackage{listings}
+% move the asterisk at the right position
+\lstset{basicstyle=\ttfamily,tabsize=4,literate={*}{${}^*{}$}1}
+%\lstset{language=C,basicstyle=\ttfamily}
+\usepackage{moreverb}
+\usepackage{palatino}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{color}
+
+% Because of an error on line 41 I added this
+\usepackage{graphicx}
+
+% Used for drawing DFAs and NFAs
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+
+% Defined checkmark sign
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% Table coloring
+\usepackage{color, colortbl}
+\usepackage[first=0,last=9]{lcg}
+
+% Tab
+\newcommand\tab[1][1.15cm]{\hspace*{#1}}
+
+% Math space
+\DeclareFontEncoding{LS1}{}{}
+\DeclareFontSubstitution{LS1}{stix}{m}{n}
+\DeclareSymbolFont{symbolsstix}{LS1}{stixscr}{m}{n}
+\SetSymbolFont{symbolsstix}{bold}{LS1}{stixscr}{b}{n}
+\DeclareMathSymbol{\mathvisiblespace}{0}{symbolsstix}{"B6}
+
+%% pdflatex?
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse % we are not running PDFLaTeX
+\else
+\pdfoutput=1 % we are running PDFLaTeX
+\pdftrue
+\fi
+%\ifpdf
+%\usepackage[pdftex]{graphicx}
+%\else
+%\usepackage{graphicx}
+%\fi
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\parindent=0cm
+\parskip=0cm
+
+\setlength{\columnseprule}{0.4pt}
+\addtolength{\columnsep}{2pt}
+
+\addtolength{\textheight}{5.5cm}
+\addtolength{\topmargin}{-26mm}
+\pagestyle{empty}
+
+%%
+%% Sheet setup
+%% 
+\newcommand{\coursename}{Computability and Complexity}
+\newcommand{\courseno}{CO21-320352}
+ 
+\newcommand{\sheettitle}{Homework}
+\newcommand{\mytitle}{}
+\newcommand{\mytoday}{March 5th, 2019}
+
+% Current Assignment number
+\newcounter{assignmentno}
+\setcounter{assignmentno}{4}
+
+% Current Problem number, should always start at 1
+\newcounter{problemno}
+\setcounter{problemno}{1}
+
+%%
+%% problem and bonus environment
+%%
+\newcounter{probcalc}
+\newcommand{\exercise}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Exercise \arabic{problemno}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+\newcommand{\bonus}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Bonus Problem \textcolor{blue}{\arabic{assignmentno}}.\textcolor{blue}{\arabic{problemno}}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+%% some counters  
+\newcommand{\assignment}{\arabic{assignmentno}}
+
+%% solution  
+\newcommand{\solution}{\pagebreak[2]{\bf Solution:}\\}
+
+%% Hyperref Setup
+\hypersetup{pdftitle={Homework \assignment},
+  pdfsubject={\coursename},
+  pdfauthor={},
+  pdfcreator={},
+  pdfkeywords={Computability and Complexity},
+  %  pdfpagemode={FullScreen},
+  %colorlinks=true,
+  %bookmarks=true,
+  %hyperindex=true,
+  bookmarksopen=false,
+  bookmarksnumbered=true,
+  breaklinks=true,
+  %urlcolor=darkblue
+  urlbordercolor={0 0 0.7}
+}
+
+\begin{document}
+\coursename \hfill Course: \courseno\\
+Jacobs University Bremen \hfill \mytoday\\
+Dragi Kamov and Dushan Terzikj\hfill
+\vspace*{0.3cm}\\
+\begin{center}
+{\Large \sheettitle{} \assignment\\}
+\end{center}
+
+\exercise{}{0}
+\solution
+The encoding is based on enumeration using binary representation of natural numbers. Since in the task we are given to encode a ultra-simple TM into $<$M$>$, this should be ultra-easy.\\ \\ 
+Generally speaking, let us suppose that we have the TM $M=\{K, \Sigma, \delta, q_0\}$, and $K=\{q_0, q_1, ..., q_n\}$ for some $n$. We will enumerate the states in the following way:
+\begin{align*}
+    q_0&\rightarrow 0\\
+    q_1&\rightarrow 1\\
+    q_2&\rightarrow 10\\
+    q_3&\rightarrow 11\\
+    ...
+\end{align*}
+And so on - you get the gist. We can do the same for the tape alphabet. For the sake of simplicity let's define the alphabet to be the same as the task's alphabet $\Sigma$. Then we can enumerate the 4 letters in the alphabet with 0, 1, 01, and 11. Now, the only thing that is left is how to write down the moving of the cursor on the tape. Simple: 0 for nothing, 10 for left, 11 for right.\\ \\
+Regarding transitions: it's better to understand it with an example. Let's consider the transition $\delta(q_0, 0)=(\text{yes}, 0, -)$. Since $<$M$>\in \{0, 1, \#\}$ we can write the transition in a following way: $0\#0\#1\#0\#0$.\\ \\ 
+There we have it. We can use $\#\#$ to divide different transitions and we can use $\mathvisiblespace\#$ to indicate the end of transitions. Therefore at the end, we can have the following encoding for the given \textbf{ultra-simple TM}:\\ \\
+$ 0 \# 0 \# 1 \# 0 \# 0 \#\# 0 \# 1 \# 0 \# 1 \# 11 \#\# 0 \# 10 \# 0 \# 10 \# 0 \#\# 0 \# 11 \# 0 \# 11 \# 11 \#\# \mathvisiblespace \# $
+
+\end{document}
