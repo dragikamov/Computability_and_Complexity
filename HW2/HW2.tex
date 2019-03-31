@@ -1,0 +1,170 @@
+\documentclass[a4paper]{article}
+\usepackage[pdftex]{hyperref}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{ifthen}
+\usepackage{listings}
+% move the asterisk at the right position
+\lstset{basicstyle=\ttfamily,tabsize=4,literate={*}{${}^*{}$}1}
+%\lstset{language=C,basicstyle=\ttfamily}
+\usepackage{moreverb}
+\usepackage{palatino}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{color}
+% \usepackage[utf8]{inputenc}
+\usepackage{tabulary}
+\usepackage{colortbl}
+
+% Because of an error on line 41 I added this
+\usepackage{graphicx}
+
+% Used for drawing DFAs and NFAs
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+
+% Tab
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+% HalfTab
+\newcommand\halftab[1][0.5cm]{\hspace*{#1}}
+
+% Checkmark
+\usepackage{amssymb}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+%% pdflatex?
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse % we are not running PDFLaTeX
+\else
+\pdfoutput=1 % we are running PDFLaTeX
+\pdftrue
+\fi
+%\ifpdf
+%\usepackage[pdftex]{graphicx}
+%\else
+%\usepackage{graphicx}
+%\fi
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\parindent=0cm
+\parskip=0cm
+
+\setlength{\columnseprule}{0.4pt}
+\addtolength{\columnsep}{2pt}
+
+\addtolength{\textheight}{5.5cm}
+\addtolength{\topmargin}{-26mm}
+\pagestyle{empty}
+
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+%%
+%% Sheet setup
+%% 
+\newcommand{\coursename}{Computability and Complexity}
+\newcommand{\courseno}{CO21-320211}
+ 
+\newcommand{\sheettitle}{Homework}
+\newcommand{\mytitle}{}
+\newcommand{\mytoday}{February 19, 2019}
+
+\newcommand{\qed}{\ensuremath\square}
+
+% Current Assignment number
+\newcounter{assignmentno}
+\setcounter{assignmentno}{2}
+
+% Current Problem number, should always start at 1
+\newcounter{problemno}
+\setcounter{problemno}{1}
+
+%%
+%% problem and bonus environment
+%%
+\newcounter{probcalc}
+\newcommand{\exercise}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Exercise \arabic{problemno}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+\newcommand{\bonus}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Bonus Problem \arabic{assignmentno}.\arabic{problemno}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+%% some counters  
+\newcommand{\assignment}{\arabic{assignmentno}}
+
+%% solution  
+\newcommand{\solution}{\pagebreak[2]{\bf Solution:}\\}
+
+%% Hyperref Setup
+\hypersetup{pdftitle={Homework \assignment},
+  pdfsubject={\coursename},
+  pdfauthor={},
+  pdfcreator={},
+  pdfkeywords={Computability and Complexity},
+  %  pdfpagemode={FullScreen},
+  %colorlinks=true,
+  %bookmarks=true,
+  %hyperindex=true,
+  bookmarksopen=false,
+  bookmarksnumbered=true,
+  breaklinks=true,
+  %urlcolor=darkblue
+  urlbordercolor={0 0 0.7}
+}
+
+\begin{document}
+\coursename \hfill Course: \courseno\\
+Jacobs University Bremen \hfill \mytoday\\
+Dragi Kamov and Dushan Terzikj\hfill
+\vspace*{0.3cm}\\
+\begin{center}
+{\Large \sheettitle{} \assignment\\}
+\end{center}
+
+\exercise{}{0}
+\solution \\ \\
+The idea is to use 2-tape TM: the first tape will be read only and it will be the input tape with the word $w$ written on it, while the second tape will be a binary counter. This "binary counter" will represent a number in binary form. \\ \\
+How will the increments happen? Well whenever you increment 1, first replace all leading 1s to 0s and write the first 0 you encounter to 1. For example if we have $1110100$ on the tape and we want to increment one, it turns into $0001100$. Take a look at the next page for a TM which does that (apologize in advance for the quality of the picture, please don't judge us).\\ \\
+
+The transitions which go from $q0$ to $q1$ and $q0$ to $q3$ are transitions made when there are still 1s in the input tape, while the transition $q0$ to $q2$ is when the decision comes. All numbers which are powers of 2 have this form $0*1$. Starting from $q2$ that is being decided: if the number on the write tape is in the form 0*1, then the input word $w$ is of length power of 2.
+
+\newpage
+\exercise{}{0}
+\solution
+Solution coppied from Brian Sherif. \\ \\
+(a) Are the functions f(n) = exp(n) and g(n) = exp(2n) polynomially related? \\
+Yes, f(n) and g(n) are polynomially related. 
+After reading, we can find that there exist a p such that $f(n) <= p(g(n))$ while also being $g(n) <= p(f(n))$. \\
+if we consider our p(x)=$x^2$ we find the ability to make $p(f(n)) == g(n)$ and $f(n)<=p(g(n))$.
+\\
+
+Showing indeed that they are both polynomially related\\
+
+(b)What about f(n) = exp(n) and g(n) = exp($n^2$)?
+When we consider the rate of growth for both the exp(n) and exp($n^2$).  We can calculate the growth rate by considering the slope (calculating its derivative. The derivative of exp(n) is exp(n) while the exp($n^2$) will be equal to 2n(exp($n^2$)) showing a much more aggressive growth rate. \\
+To prove it further we can attempt to prove that there exist there exist no $'p' f(n) <= p(g(n))$ while also being $g(n) <= p(f(n)$).\\
+We can attempt this by first trying to equate g(n) and f(n).  As lim of n to infinity we can make exp($n^2$) = exp(n) when Px = $x^2$ then P(f(n)) = g(n) as n goes to infinity. But when reversed; that is not the same. \\
+On the other hand; trying to equate g(n) to f(n) by making P(x)=$x^{0.25}$ will lead to an undesired equation if we apply it to f(n) hence showing that f(n) = exp(n) and g(n) = exp($n^2$) are not polynomially related.
+
+\end{document}
